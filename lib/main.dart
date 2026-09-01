@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
+  // Starts the Flutter application.
   runApp(const MyApp());
 }
 
+// Root widget for the application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -21,20 +23,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Stateful widget because the selected units and result can change.
 class MeasuresConverterPage extends StatefulWidget {
   const MeasuresConverterPage({super.key});
 
   @override
-  State<MeasuresConverterPage> createState() => _MeasuresConverterPageState();
+  State<MeasuresConverterPage> createState() =>
+      _MeasuresConverterPageState();
 }
 
 class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
+  // Controller used to read the value entered by the user.
   final TextEditingController valueController = TextEditingController();
 
+  // Default units shown when the app first opens.
   String fromUnit = 'meters';
   String toUnit = 'feet';
   String result = '';
 
+  // Units available in the From and To drop-down lists.
   final List<String> units = [
     'meters',
     'feet',
@@ -44,9 +51,11 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
     'pounds',
   ];
 
+  // Converts the entered value based on the units selected by the user.
   void convertValue() {
     double? value = double.tryParse(valueController.text);
 
+    // Checks that the user entered a valid number.
     if (value == null) {
       setState(() {
         result = 'Please enter a valid number';
@@ -69,6 +78,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
     } else if (fromUnit == 'pounds' && toUnit == 'kilograms') {
       convertedValue = value / 2.20462;
     } else if (fromUnit == toUnit) {
+      // No calculation is needed when both units are the same.
       convertedValue = value;
     } else {
       setState(() {
@@ -77,6 +87,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
       return;
     }
 
+    // Updates the text displayed to the user.
     setState(() {
       result =
       '${value.toStringAsFixed(1)} $fromUnit are '
@@ -86,6 +97,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
 
   @override
   void dispose() {
+    // Releases the controller when the page is closed.
     valueController.dispose();
     super.dispose();
   }
@@ -122,6 +134,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
 
               const SizedBox(height: 25),
 
+              // Input field for the value that will be converted.
               TextField(
                 controller: valueController,
                 keyboardType: TextInputType.number,
@@ -158,6 +171,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
 
               const SizedBox(height: 20),
 
+              // Drop-down list for the starting measurement unit.
               DropdownButtonFormField<String>(
                 initialValue: fromUnit,
                 style: const TextStyle(
@@ -192,6 +206,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
 
               const SizedBox(height: 20),
 
+              // Drop-down list for the target measurement unit.
               DropdownButtonFormField<String>(
                 initialValue: toUnit,
                 style: const TextStyle(
@@ -216,6 +231,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
 
               const SizedBox(height: 35),
 
+              // Runs the conversion when the user presses the button.
               ElevatedButton(
                 onPressed: convertValue,
                 style: ElevatedButton.styleFrom(
@@ -236,6 +252,7 @@ class _MeasuresConverterPageState extends State<MeasuresConverterPage> {
 
               const SizedBox(height: 35),
 
+              // Displays the final conversion result.
               Text(
                 result,
                 textAlign: TextAlign.center,
